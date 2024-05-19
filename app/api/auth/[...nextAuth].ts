@@ -1,6 +1,5 @@
-import { JWT, JWTDecodeParams, JWTEncodeParams, getToken } from "next-auth/jwt";
+import { JWTDecodeParams, JWTEncodeParams, getToken } from "next-auth/jwt";
 import * as jose from "jose";
-import { NextResponse } from "next/server";
 
 const encodedSecret = new TextEncoder().encode(process.env.JWT_SECRET!);
 const encode = async (params: JWTEncodeParams) => {

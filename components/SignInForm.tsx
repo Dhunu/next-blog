@@ -26,7 +26,7 @@ export default function SignInForm() {
 
     const formSchema = z.object({
         username: isUsername ? z.string().min(3) : z.string().optional(),
-        email: z.string().email(),
+        email: isUsername ? z.string().optional() : z.string().email(),
         password: z
             .string()
             .min(8, { message: "Password must be at least 8 characters" }),
@@ -163,7 +163,7 @@ export default function SignInForm() {
                 </Button>
                 <div className="mt-10 flex justify-center items-center">
                     <span className="text-muted-foreground text-sm">
-                        Don't have an account?
+                        Don&apos;t have an account?
                     </span>
                     <Link
                         href="/sign-up"

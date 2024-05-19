@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import bcryptjs from "bcryptjs";
-import { encode } from "@/app/api/auth/[...nextAuth]/route";
+import { encode } from "@/app/api/auth/[...nextAuth]";
 
 const userSchema = new Schema(
     {

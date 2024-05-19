@@ -1,4 +1,4 @@
-import { decode } from "@/app/api/auth/[...nextAuth]/route";
+import { decode } from "@/app/api/auth/[...nextAuth]";
 import { connectDb } from "@/lib/db";
 import User from "@/models/user";
 import { NextResponse } from "next/server";
