@@ -5,6 +5,6 @@ export const metadata: Metadata = {
     description: "This is a page where you can view all your blogs.",
 };
 
-export default function page() {
+export default function MyBlogs() {
     return <div>page</div>;
 }

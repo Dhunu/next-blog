@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import { Schema, model, models } from "mongoose";
 import bcryptjs from "bcryptjs";
 import { encode } from "@/app/api/auth/[...nextAuth]";
 
@@ -87,4 +87,4 @@ userSchema.methods.generateRefreshToken = async function () {
 
     return res;
 };
-export default mongoose.models?.User || mongoose.model("User", userSchema);
+export default models?.User || model("User", userSchema);

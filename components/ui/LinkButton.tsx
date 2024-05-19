@@ -8,9 +8,11 @@ import React from "react";
 export default function LinkButton({
     href,
     label,
+    className,
 }: {
     href: string;
     label: string;
+    className?: string;
 }) {
     const pathname = usePathname();
     const active = pathname === href;
@@ -19,7 +21,8 @@ export default function LinkButton({
             href={href}
             className={cn(
                 "p-2 rounded-md font-semibold transition-colors duration-200 relative flex flex-col",
-                active && "text-primary"
+                active && "text-primary",
+                className
             )}
         >
             <span className="text-lg">{label}</span>

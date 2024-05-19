@@ -168,4 +168,25 @@ const validateUser = async (accessToken: string) => {
     return userId;
 };
 
-export { register, login, generateAccessandRefreshToken, logout, validateUser };
+const getCurrentUser = async (userId: string) => {
+    await connectDb();
+
+    const user = await User.findById(userId).select("-password -refreshToken");
+
+    if (!user) {
+        return NextResponse.json("User not found", {
+            status: 404,
+        });
+    }
+
+    return NextResponse.json(user, { status: 200 });
+};
+
+export {
+    register,
+    login,
+    generateAccessandRefreshToken,
+    logout,
+    validateUser,
+    getCurrentUser,
+};
