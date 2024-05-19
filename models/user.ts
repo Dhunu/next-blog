@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import bcryptjs from "bcryptjs";
+import { encode } from "@/app/api/auth/[...nextAuth]/route";
 
 const userSchema = new Schema(
     {
@@ -50,42 +50,41 @@ const userSchema = new Schema(
 
 userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) return next();
-    this.password = await bcrypt.hash(this.password, 10);
+    this.password = await bcryptjs.hash(this.password, 10);
     next();
 });
 
-userSchema.methods.comparePassword = async function (password: string) {
-    return await bcrypt.compare(password, this.password);
+userSchema.methods.isPasswordCorrect = async function (password: string) {
+    return await bcryptjs.compare(password, this.password);
 };
 
-userSchema.methods.generateAccressToken = function () {
-    jwt.sign(
-        {
+userSchema.methods.generateAccessToken = async function () {
+    const res = await encode({
+        token: {
             _id: this._id,
             email: this.email,
             username: this.username,
             firstName: this.firstName,
             lastName: this.lastName,
         },
-        process.env.ACCESS_TOKEN_SECRET!,
-        {
-            expiresIn: process.env.ACCESS_TOKEN_EXPIRY!,
-        }
-    );
+        salt: process.env.ACCESS_TOKEN_SALT!,
+        secret: process.env.ACCESS_TOKEN_SECRET!,
+        maxAge: parseInt(process.env.ACCESS_TOKEN_EXPIRY!),
+    });
+
+    return res;
 };
 
-userSchema.methods.generateRefreshToken = function () {
-    jwt.sign(
-        {
+userSchema.methods.generateRefreshToken = async function () {
+    const res = await encode({
+        token: {
             _id: this._id,
         },
-        process.env.REFRESH_TOKEN_SECRET!,
-        {
-            expiresIn: process.env.REFRESH_TOKEN_EXPIRY!,
-        }
-    );
+        salt: process.env.REFRESH_TOKEN_SALT!,
+        secret: process.env.REFRESH_TOKEN_SECRET!,
+        maxAge: parseInt(process.env.REFRESH_TOKEN_EXPIRY!),
+    });
+
+    return res;
 };
-
-const User = mongoose.model("User", userSchema);
-
-export default User;
+export default mongoose.models?.User || mongoose.model("User", userSchema);

@@ -1,3 +1,4 @@
+import Navbar from "@/components/shared/Navbar";
 import React from "react";
 
 export default async function RootLayout({
@@ -5,5 +6,10 @@ export default async function RootLayout({
 }: {
     children: React.ReactNode;
 }) {
-    return <div>{children}</div>;
+    return (
+        <main>
+            <Navbar />
+            {children}
+        </main>
+    );
 }

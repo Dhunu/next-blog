@@ -14,16 +14,21 @@ import {
     FormMessage,
 } from "./ui/form";
 import { Input } from "./ui/input";
-import { authFormSchema } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
-import authService from "@/appwrite/auth";
+import Link from "next/link";
 
 const formSchema = z
     .object({
-        fullName: z
-            .string()
-            .min(3, { message: "Name must be at least 3 characters" }),
+        firstName: z.string().min(3, {
+            message: "First name must be at least 3 characters",
+        }),
+        lastName: z.string().min(3, {
+            message: "Last name must be at least 3 characters",
+        }),
+        username: z.string().min(3, {
+            message: "Username must be at least 3 characters",
+        }),
         email: z.string().email(),
         password: z
             .string()
@@ -37,10 +42,13 @@ const formSchema = z
 
 export default function SignUpForm() {
     const router = useRouter();
+    const [signingUp, setSigningUp] = React.useState(false);
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            fullName: "",
+            firstName: "",
+            lastName: "",
+            username: "",
             email: "",
             password: "",
             confirmPassword: "",
@@ -48,7 +56,31 @@ export default function SignUpForm() {
     });
 
     async function onSubmit(data: z.infer<typeof formSchema>) {
-        //TODO: Handle form submission
+        setSigningUp(true);
+        await fetch("/api/sign-up", {
+            method: "POST",
+            body: JSON.stringify({
+                firstName: data.firstName,
+                lastName: data.lastName,
+                username: data.username,
+                email: data.email,
+                password: data.password,
+            }),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((res) => {
+                if (res.status === 200) {
+                    setSigningUp(false);
+                    router.push("/");
+                }
+            })
+            .catch((error) => {
+                alert("Error signing up. Please try again.");
+                setSigningUp(false);
+                router.refresh();
+            });
     }
     return (
         <Form {...form}>
@@ -56,16 +88,53 @@ export default function SignUpForm() {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-6 max-w-[400px] w-full"
             >
+                <div className="flex gap-5">
+                    <FormField
+                        control={form.control}
+                        name="firstName"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>First Name</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        {...field}
+                                        placeholder="John"
+                                        type="text"
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="lastName"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Last Name</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        {...field}
+                                        placeholder="Doe"
+                                        type="text"
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </div>
+
                 <FormField
                     control={form.control}
-                    name="fullName"
+                    name="username"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Name</FormLabel>
+                            <FormLabel>Username</FormLabel>
                             <FormControl>
                                 <Input
                                     {...field}
-                                    placeholder="Enter your full name here"
+                                    placeholder="doejohn123"
                                     type="text"
                                 />
                             </FormControl>
@@ -136,14 +205,12 @@ export default function SignUpForm() {
                     <span className="text-muted-foreground text-sm">
                         Already have an account?
                     </span>
-                    <Button
-                        type="button"
-                        variant="link"
-                        onClick={() => router.push(" /sign-in")}
-                        className="text-primary text-sm"
+                    <Link
+                        href="/sign-in"
+                        className="text-primary text-sm ml-2 font-semibold"
                     >
                         Sign In
-                    </Button>
+                    </Link>
                 </div>
             </form>
         </Form>
