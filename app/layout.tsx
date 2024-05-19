@@ -7,6 +7,7 @@ import NextTopLoader from "nextjs-toploader";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+    metadataBase: new URL("https://blogify-stories.vercel.app/"),
     title: {
         default: "Blogify - A place for your stories",
         template: "%s | Blogify",
