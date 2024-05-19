@@ -32,7 +32,7 @@ const createBlog = async ({
 
     const accessToken = cookies().get("accessToken");
 
-    const res = await fetch("http://localhost:3000/api/get-current-user", {
+    const res = await fetch(`${process.env.ORIGIN}/api/get-current-user`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

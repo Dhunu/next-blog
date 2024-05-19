@@ -12,7 +12,7 @@ export async function middleware(request: NextRequest) {
     }
 
     try {
-        const res = await fetch("http://localhost:3000/api/validate-user", {
+        const res = await fetch(`${process.env.ORIGIN}/api/validate-user`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
