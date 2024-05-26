@@ -53,7 +53,7 @@ export default function SignInForm() {
             .then((res) => {
                 if (res.status === 200) {
                     setSigningIn(false);
-                    router.push("/");
+                    router.replace("/");
                 }
             })
             .catch((error) => {

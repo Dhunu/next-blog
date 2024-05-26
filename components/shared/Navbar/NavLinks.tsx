@@ -14,7 +14,7 @@ export default function NavLinks() {
                 <LinkButton
                     href="/my-blogs/create-blog"
                     label="Create"
-                    className="rounded-md bg-primary/60 text-white"
+                    className="rounded-md dark:bg-primary/60 bg-primary text-white"
                 />
             </li>
         </ul>

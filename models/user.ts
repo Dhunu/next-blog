@@ -37,7 +37,7 @@ const userSchema = new Schema(
         },
         profileUrl: {
             type: String,
-            default: "/images/default-profile.png",
+            default: "/images/default-profile.svg",
         },
         refreshToken: {
             type: String,

@@ -9,10 +9,7 @@ export default function Navbar() {
         <nav className="w-full h-20 flex items-center justify-between px-5 md:px-10 xl:px-20 border-b sticky top-0">
             <Logo />
             <NavLinks />
-            <div className="flex gap-5 items-center w-60 justify-end">
-                <User />
-                <LogoutButton />
-            </div>
+            <User />
         </nav>
     );
 }

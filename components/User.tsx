@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import React from "react";
+import UserNav from "./UserNav";
 
 export default async function User() {
     const accessToken = cookies().get("accessToken");
@@ -13,5 +13,5 @@ export default async function User() {
 
     const { user } = await res.json();
 
-    return <div>{user.username}</div>;
+    return <UserNav user={user}/>;
 }
